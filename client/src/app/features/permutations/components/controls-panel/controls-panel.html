@@ -1,0 +1,18 @@
+<div class="d-flex flex-wrap gap-2">
+  @if (!isListMode()) {
+  <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="nextClicked.emit()">
+    Next
+  </button>
+  <button type="button" class="btn btn-outline-primary" [disabled]="loading() || !canShowAll()"
+    (click)="showAllClicked.emit()">
+    All Permutations
+  </button>
+  } @else {
+  <button type="button" class="btn btn-secondary" [disabled]="loading()" (click)="backClicked.emit()">
+    Back
+  </button>
+  }
+  <button type="button" class="btn btn-outline-danger" [disabled]="loading()" (click)="resetClicked.emit()">
+    Reset
+  </button>
+</div>

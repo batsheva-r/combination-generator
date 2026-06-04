@@ -1,0 +1,1 @@
+export type ViewState = | 'input' | 'single' | 'list';

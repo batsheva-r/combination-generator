@@ -1,0 +1,70 @@
+<div class="container py-4">
+  <h1 class="mb-4 text-center">
+    Permutations Generator
+  </h1>
+
+  @if (state.error()) {
+  <div class="alert alert-danger">
+    {{ state.error() }}
+  </div>
+  }
+
+  @if (state.isInputMode()) {
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-6 col-lg-4">
+      <app-start-form (startClicked)="start($event)" />
+    </div>
+  </div>
+  } @else {
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-6">
+          <strong>N:</strong>
+          {{ state.n() }}
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-6">
+          <strong>Total permutations:</strong>
+          {{ state.totalPermutations().toLocaleString() }}
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <app-controls-panel [isListMode]="state.isListMode()" [canShowAll]="state.canShowAll()" [loading]="state.loading()"
+    (nextClicked)="next()" (showAllClicked)="showAll()" (backClicked)="back()" (resetClicked)="reset()" />
+
+  @if (state.isSingleMode()) {
+  <div class="card mt-4">
+    <div class="card-body">
+      @if (state.hasCurrentPermutation()) {
+      <h5 class="mb-3">
+        Permutation #{{ state.currentIndexLabel() }}
+      </h5>
+      <div class="fs-5">
+        [{{ state.currentPermutation().join(', ') }}]
+      </div>
+      } @else {
+      <div class="text-muted">
+        Click Next to display the first permutation
+      </div>
+      }
+    </div>
+  </div>
+  }
+
+  @if (state.isListMode()) {
+  <div class="mt-4">
+    <app-permutations-table [items]="state.items()" />
+  </div>
+  <div class="mt-2">
+    <app-pagination [page]="state.page()" [totalPages]="state.totalPages()" [hasNextPage]="state.hasNextPage()"
+      [hasPreviousPage]="state.hasPreviousPage()" [loading]="state.loading()" (firstPageClicked)="firstPage()"
+      (previousPageClicked)="previousPage()" (nextPageClicked)="nextPage()" (lastPageClicked)="lastPage()"
+      (pageChanged)="goToPage($event)" />
+  </div>
+  }
+  }
+</div>

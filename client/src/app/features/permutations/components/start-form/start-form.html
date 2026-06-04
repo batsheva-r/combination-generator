@@ -1,0 +1,21 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="card shadow-sm">
+  <div class="card-body">
+    <h2 class="h4 mb-3">
+      Permutations Generator
+    </h2>
+    <div class="mb-3">
+      <label for="n" class="form-label">
+        enter number to generate its permutations (max 20)
+      </label>
+      <input id="n" type="number" class="form-control" formControlName="n" min="1" max="20" />
+      @if ( form.controls.n.invalid && form.controls.n.touched ) {
+      <div class="text-danger mt-2">
+        Please enter a value between 1 and 20.
+      </div>
+      }
+    </div>
+    <button type="submit" class="btn btn-primary">
+      Start
+    </button>
+  </div>
+</form>

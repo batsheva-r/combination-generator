@@ -1,0 +1,50 @@
+<div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+  <div class="fw-medium">
+    Page {{ page() }} of {{ totalPages() }}
+  </div>
+  <form [formGroup]="jumpForm" (ngSubmit)="goToPage()" class="d-flex align-items-center gap-2">
+    <label for="jumpPage" class="form-label mb-0">
+      Go to page
+    </label>
+    <input id="jumpPage" type="text" inputmode="numeric" class="form-control" formControlName="page" />
+    <button type="submit" class="btn btn-outline-secondary" [disabled]="loading()">
+      Go
+    </button>
+  </form>
+</div>
+<nav aria-label="Permutation pages" class="d-flex justify-content-center">
+  <ul class="pagination flex-wrap mb-3">
+    <li class="page-item" [class.disabled]="!hasPreviousPage() || loading()">
+      <button type="button" class="page-link" [disabled]="!hasPreviousPage() || loading()"
+        [attr.aria-disabled]="!hasPreviousPage() || loading()" (click)="firstPageClicked.emit()">
+        First
+      </button>
+    </li>
+    <li class="page-item" [class.disabled]="!hasPreviousPage() || loading()">
+      <button type="button" class="page-link" [disabled]="!hasPreviousPage() || loading()"
+        [attr.aria-disabled]="!hasPreviousPage() || loading()" (click)="previousPageClicked.emit()">
+        Previous
+      </button>
+    </li>
+
+    @for (pageNumber of visiblePages(); track pageNumber) {
+    <li class="page-item" [class.active]="pageNumber === page()">
+      <button type="button" class="page-link" [disabled]="loading()" (click)="pageChanged.emit(pageNumber)">
+        {{ pageNumber }}
+      </button>
+    </li>
+    }
+    <li class="page-item" [class.disabled]="!hasNextPage() || loading()">
+      <button type="button" class="page-link" [disabled]="!hasNextPage() || loading()"
+        [attr.aria-disabled]="!hasNextPage() || loading()" (click)="nextPageClicked.emit()">
+        Next
+      </button>
+    </li>
+    <li class="page-item" [class.disabled]="!hasNextPage() || loading()">
+      <button type="button" class="page-link" [disabled]="!hasNextPage() || loading()"
+        [attr.aria-disabled]="!hasNextPage() || loading()" (click)="lastPageClicked.emit()">
+        Last
+      </button>
+    </li>
+  </ul>
+</nav>

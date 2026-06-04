@@ -1,0 +1,22 @@
+# Angular
+client/node_modules/
+client/dist/
+client/.angular/
+client/coverage/
+
+# Python
+server/.venv/
+server/venv/
+server/__pycache__/
+server/.pytest_cache/
+server/*.pyc
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+.github/
