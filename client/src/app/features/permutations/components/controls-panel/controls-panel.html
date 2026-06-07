@@ -1,18 +1,25 @@
-<div class="d-flex flex-wrap gap-2">
+<div class="d-flex justify-content-start gap-2 d-md-flex flex-wrap">
   @if (!isListMode()) {
-  <button type="button" class="btn btn-primary" [disabled]="loading()" (click)="nextClicked.emit()">
+  <button type="button" class="btn btn-primary align-items-center gap-2" [disabled]="loading()"
+    (click)="nextClicked.emit()">
+    <fa-icon [icon]="faArrowRight" class="fs-6"></fa-icon>
     Next
   </button>
-  <button type="button" class="btn btn-outline-primary" [disabled]="loading() || !canShowAll()"
+  <button type="button" class="btn btn-outline-primary align-items-center gap-2" [disabled]="loading() || !canShowAll()"
     (click)="showAllClicked.emit()">
-    All Permutations
+    <fa-icon [icon]="faList" class="fs-6"></fa-icon>
+    Show All
   </button>
   } @else {
-  <button type="button" class="btn btn-secondary" [disabled]="loading()" (click)="backClicked.emit()">
+  <button type="button" class="btn btn-secondary align-items-center gap-2" [disabled]="loading()"
+    (click)="backClicked.emit()">
+    <fa-icon [icon]="faArrowLeft" class="fs-6"></fa-icon>
     Back
   </button>
   }
-  <button type="button" class="btn btn-outline-danger" [disabled]="loading()" (click)="resetClicked.emit()">
+  <button type="button" class="btn btn-outline-danger align-items-center gap-2" [disabled]="loading()"
+    (click)="resetClicked.emit()">
+    <fa-icon [icon]="faUndo" class="fs-6"></fa-icon>
     Reset
   </button>
 </div>

@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
-import { StartRequest, StartResponse, } from '../models/start.dto';
-import { NextRequest, NextResponse, } from '../models/next.dto';
-import { GetAllRequest, GetAllResponse, } from '../models/all.dto';
+import { StartRequest, StartResponse } from '../models/start.dto';
+import { NextRequest, NextResponse } from '../models/next.dto';
+import { GetAllRequest, GetAllResponse } from '../models/all.dto';
 
 
 @Injectable({
@@ -18,6 +19,8 @@ export class PermutationsApi {
     return this.http.post<StartResponse>(
       `${this.baseUrl}/start`,
       request,
+    ).pipe(
+      catchError(this.handleError)
     );
   }
 
@@ -25,6 +28,8 @@ export class PermutationsApi {
     return this.http.post<NextResponse>(
       `${this.baseUrl}/next`,
       request,
+    ).pipe(
+      catchError(this.handleError)
     );
   }
 
@@ -37,6 +42,20 @@ export class PermutationsApi {
     return this.http.get<GetAllResponse>(
       `${this.baseUrl}/all`,
       { params },
+    ).pipe(
+      catchError(this.handleError)
     );
   }
+
+  private readonly handleError = (
+    error: HttpErrorResponse,
+  ) => {
+    const errorMessage =
+      error.status === 0
+        ? 'Unable to connect to server.'
+        : error.error?.detail ??
+        error.message ??
+        'An unknown error occurred';
+    return throwError(() => new Error(errorMessage));
+  };
 }

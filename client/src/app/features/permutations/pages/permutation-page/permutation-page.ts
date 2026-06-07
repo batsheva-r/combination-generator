@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faExclamationTriangle, faShuffle } from '@fortawesome/free-solid-svg-icons';
 import { StartFormComponent } from '../../components/start-form/start-form';
 import { ControlsPanelComponent } from '../../components/controls-panel/controls-panel';
 import { PermutationsTableComponent } from '../../components/permutation-table/permutation-table';
@@ -7,18 +9,20 @@ import { PermutationsState } from '../../services/permutations-state';
 
 @Component({
   selector: 'app-permutations-page',
-  imports: [StartFormComponent, ControlsPanelComponent, PermutationsTableComponent, PaginationComponent],
+  imports: [FontAwesomeModule, StartFormComponent, ControlsPanelComponent, PermutationsTableComponent, PaginationComponent],
   templateUrl: './permutation-page.html',
   styleUrls: ['./permutation-page.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PermutationsPageComponent {
   readonly state = inject(PermutationsState);
+  readonly faShuffle = faShuffle;
+  readonly faExclamationTriangle = faExclamationTriangle;
 
   start(n: number): void {
     void this.state.start(n);
   }
-  
+
   next(): void {
     void this.state.next();
   }

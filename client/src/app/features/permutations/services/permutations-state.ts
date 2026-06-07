@@ -50,6 +50,17 @@ export class PermutationsState {
     return this.currentIndex() + 1n < total;
   });
 
+  private resetCalculationState(): void {
+    this.currentIndex.set(0n);
+    this.currentPermutation.set([]);
+    this.items.set([]);
+    this.page.set(1n);
+    this.totalPages.set(0n);
+    this.totalItems.set(0n);
+    this.hasNextPage.set(false);
+    this.hasPreviousPage.set(false);
+  }
+
   async start(n: number): Promise<void> {
     this.loading.set(true);
     this.error.set(null);
@@ -60,17 +71,11 @@ export class PermutationsState {
       );
       this.n.set(n);
       this.totalPermutations.set(BigInt(response.total));
-      this.currentIndex.set(0n);
-      this.currentPermutation.set([]);
-      this.items.set([]);
-      this.page.set(1n);
-      this.totalPages.set(0n);
-      this.totalItems.set(0n);
+      this.resetCalculationState();
       this.viewMode.set('single');
-      this.hasNextPage.set(false);
-      this.hasPreviousPage.set(false);
-    } catch {
-      this.error.set('Failed to start calculation');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to start calculation';
+      this.error.set(errorMessage);
     } finally {
       this.loading.set(false);
     }
@@ -87,7 +92,7 @@ export class PermutationsState {
       : this.currentIndex();
 
     if (nextIndex >= total) {
-      this.error.set('No more permutations available');
+      this.error.set('No more combinations available');
       return;
     }
     this.loading.set(true);
@@ -103,8 +108,9 @@ export class PermutationsState {
       this.currentPermutation.set(
         response.permutation,
       );
-    } catch {
-      this.error.set('Failed to load next permutation');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load next combination';
+      this.error.set(errorMessage);
     } finally {
       this.loading.set(false);
     }
@@ -112,7 +118,7 @@ export class PermutationsState {
 
   async switchToList(): Promise<void> {
     if (!this.canShowAll()) {
-      this.error.set('No more permutations available.');
+      this.error.set('No more combinations available.');
       return;
     }
     // Calculate the page that contains the next permutation (currentIndex + 1)
@@ -120,8 +126,8 @@ export class PermutationsState {
       ? this.currentIndex() + 1n
       : 0n;
     const targetPage = nextIndex / BigInt(this.pageSize) + 1n;
-    this.viewMode.set('list');
     await this.loadPage(targetPage, 0n);
+    this.viewMode.set('list');
   }
 
   switchToSingle(): void {
@@ -157,8 +163,9 @@ export class PermutationsState {
       this.hasNextPage.set(response.has_next);
       this.hasPreviousPage.set(response.has_prev);
       this.items.set(response.items);
-    } catch {
-      this.error.set('Failed to load permutations');
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to load combinations';
+      this.error.set(errorMessage);
     } finally {
       this.loading.set(false);
     }
@@ -190,14 +197,7 @@ export class PermutationsState {
     this.viewMode.set('input');
     this.n.set(null);
     this.totalPermutations.set(0n);
-    this.currentIndex.set(0n);
-    this.currentPermutation.set([]);
-    this.items.set([]);
-    this.page.set(1n);
-    this.totalPages.set(0n);
-    this.totalItems.set(0n);
-    this.hasNextPage.set(false);
-    this.hasPreviousPage.set(false);
+    this.resetCalculationState();
     this.loading.set(false);
     this.error.set(null);
   }

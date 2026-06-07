@@ -1,20 +1,16 @@
 <div class="table-responsive">
-  <table class="table table-striped table-hover align-middle">
+  <table class="table table-sm table-striped table-hover align-middle mb-0">
     <thead>
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Permutation</th>
+        <th scope="col" class="text-secondary ps-3">#</th>
+        <th scope="col" class="text-secondary">Combination</th>
       </tr>
     </thead>
     <tbody>
       @for (item of items(); track item.index) {
       <tr>
-        <td>
-          {{ item.index}}
-        </td>
-        <td>
-          [{{ item.permutation.join(', ') }}]
-        </td>
+        <td class="fw-semibold ps-3">{{ item.index}}</td>
+        <td class="font-monospace">[{{ item.permutation.join(', ') }}]</td>
       </tr>
       }
     </tbody>

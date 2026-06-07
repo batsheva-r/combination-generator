@@ -1,70 +1,67 @@
-<div class="container py-4">
-  <h1 class="mb-4 text-center">
-    Permutations Generator
-  </h1>
-
-  @if (state.error()) {
-  <div class="alert alert-danger">
-    {{ state.error() }}
-  </div>
-  }
-
-  @if (state.isInputMode()) {
-  <div class="row justify-content-center">
-    <div class="col-12 col-md-6 col-lg-4">
-      <app-start-form (startClicked)="start($event)" />
-    </div>
-  </div>
-  } @else {
-  <div class="card shadow-sm mb-4">
-    <div class="card-body">
-      <div class="row">
-        <div class="col-md-6">
-          <strong>N:</strong>
-          {{ state.n() }}
+<div class="container-fluid bg-light min-vh-100">
+  <div class="row justify-content-center align-items-center min-vh-100">
+    <div class="col-12 col-sm-11 col-md-10 col-lg-9 py-4">
+      <div class="card border-light shadow-sm">
+        <div class="card-body p-4">
+          <div class="text-center mb-4">
+            <h1 class="h4 fw-semibold mb-2">Combinations Generator</h1>
+            <p class="text-muted mb-0">Generate and explore permutations from 1 to N.</p>
+          </div>
+          @if (state.error()) {
+          <div class="alert alert-danger border-danger d-flex align-items-start gap-3 shadow-sm mb-4" role="alert">
+            <fa-icon [icon]="faExclamationTriangle" class="text-danger fs-4 mt-1"></fa-icon>
+            <div>
+              <div class="fw-semibold mb-1">Unable to load results</div>
+              <div>{{ state.error() }}</div>
+            </div>
+          </div>
+          }
+          @if (state.isInputMode()) {
+          <div class="mb-4 justify-content-center d-flex flex-column align-items-center">
+            <app-start-form (startClicked)="start($event)" />
+          </div>
+          } @else {
+          <div class="row g-3 mb-4">
+            <div class="col-12">
+              <div class="card border-light shadow-sm h-100">
+                <div class="card-body">
+                  <div class="d-flex justify-content-start align-items-end gap-3">
+                    <div class="text-muted small mb-2">Selected N:</div>
+                    <div class="h5 fw-semibold mb-2">{{ state.n() }}</div>
+                  </div>
+                  <div class="d-flex justify-content-start align-items-end gap-3">
+                    <div class="text-muted small mb-2">Total Combinations:</div>
+                    <div class="h5 fw-semibold mb-2">{{ state.totalPermutations().toLocaleString() }}</div>
+                  </div>
+                  @if (state.isSingleMode()) {
+                  @if (state.hasCurrentPermutation()) {
+                  <h5 class="mb-3 mt-5">Combination #{{ state.currentIndexLabel() }}</h5>
+                  <div class="font-monospace fs-5">[{{ state.currentPermutation().join(', ') }}]</div>
+                  } @else {
+                  <div class="text-muted mt-4">Click Next to display the first combination</div>
+                  }
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="mb-4">
+            <app-controls-panel [isListMode]="state.isListMode()" [canShowAll]="state.canShowAll()"
+              [loading]="state.loading()" (nextClicked)="next()" (showAllClicked)="showAll()" (backClicked)="back()"
+              (resetClicked)="reset()" />
+          </div>
+          @if (state.isListMode()) {
+          <app-permutations-table [items]="state.items()" />
+          <div class="my-2">
+            <app-pagination [page]="state.page()" [totalPages]="state.totalPages()" [hasNextPage]="state.hasNextPage()"
+              [hasPreviousPage]="state.hasPreviousPage()" [loading]="state.loading()" (firstPageClicked)="firstPage()"
+              (previousPageClicked)="previousPage()" (nextPageClicked)="nextPage()" (lastPageClicked)="lastPage()"
+              (pageChanged)="goToPage($event)" />
+          </div>
+          }
+          }
         </div>
       </div>
-      <div class="row mt-2">
-        <div class="col-md-6">
-          <strong>Total permutations:</strong>
-          {{ state.totalPermutations().toLocaleString() }}
-        </div>
-      </div>
     </div>
   </div>
-  
-  <app-controls-panel [isListMode]="state.isListMode()" [canShowAll]="state.canShowAll()" [loading]="state.loading()"
-    (nextClicked)="next()" (showAllClicked)="showAll()" (backClicked)="back()" (resetClicked)="reset()" />
-
-  @if (state.isSingleMode()) {
-  <div class="card mt-4">
-    <div class="card-body">
-      @if (state.hasCurrentPermutation()) {
-      <h5 class="mb-3">
-        Permutation #{{ state.currentIndexLabel() }}
-      </h5>
-      <div class="fs-5">
-        [{{ state.currentPermutation().join(', ') }}]
-      </div>
-      } @else {
-      <div class="text-muted">
-        Click Next to display the first permutation
-      </div>
-      }
-    </div>
-  </div>
-  }
-
-  @if (state.isListMode()) {
-  <div class="mt-4">
-    <app-permutations-table [items]="state.items()" />
-  </div>
-  <div class="mt-2">
-    <app-pagination [page]="state.page()" [totalPages]="state.totalPages()" [hasNextPage]="state.hasNextPage()"
-      [hasPreviousPage]="state.hasPreviousPage()" [loading]="state.loading()" (firstPageClicked)="firstPage()"
-      (previousPageClicked)="previousPage()" (nextPageClicked)="nextPage()" (lastPageClicked)="lastPage()"
-      (pageChanged)="goToPage($event)" />
-  </div>
-  }
-  }
 </div>

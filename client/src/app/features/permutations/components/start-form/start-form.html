@@ -1,21 +1,25 @@
-<form [formGroup]="form" (ngSubmit)="submit()" class="card shadow-sm">
-  <div class="card-body">
-    <h2 class="h4 mb-3">
-      Permutations Generator
-    </h2>
+<form [formGroup]="form" (ngSubmit)="submit()" class="card border-light shadow-sm">
+  <div class="card-body py-4 px-5">
+    <div class="mb-4 text-center">
+      <h2 class="h5 fw-semibold mb-1">Start a new generation</h2>
+    </div>
     <div class="mb-3">
-      <label for="n" class="form-label">
-        enter number to generate its permutations (max 20)
-      </label>
-      <input id="n" type="number" class="form-control" formControlName="n" min="1" max="20" />
-      @if ( form.controls.n.invalid && form.controls.n.touched ) {
-      <div class="text-danger mt-2">
-        Please enter a value between 1 and 20.
+      <label for="n" class="form-label">Enter a value between 1 and 20</label>
+      <div class="input-group">
+        <input id="n" type="number" class="form-control"
+          [class.is-invalid]="form.controls.n.invalid && form.controls.n.touched" formControlName="n" min="1"
+          max="20" />
       </div>
+      @if (form.controls.n.invalid && form.controls.n.touched) {
+      <div class="invalid-feedback d-block">Please enter a number between 1 and 20.</div>
       }
     </div>
-    <button type="submit" class="btn btn-primary">
-      Start
-    </button>
+    <div class="d-flex justify-content-center">
+      <button type="submit"
+        class="btn btn-primary d-inline-flex align-items-center gap-2 w-100 w-sm-auto justify-content-center">
+        <fa-icon [icon]="faPlay" class="fs-6"></fa-icon>
+        Start
+      </button>
+    </div>
   </div>
 </form>
